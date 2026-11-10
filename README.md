@@ -1,4 +1,6 @@
-# jobbot
+# hire-me-please 🙏
+
+> *Because job hunting shouldn't feel like a second full-time job.*
 
 A command-line job-hunting assistant built on Claude and Playwright. It finds jobs, scores them against your resume, writes a tailored resume and cover letter for each good match, fills in application forms, and keeps track of every application.
 
@@ -14,7 +16,7 @@ It works with a Claude subscription through the Claude Code CLI (no API key need
 - **AI match scoring.** Claude rates each job 0–100 against your profile and resume and explains why. Jobs below your `min_score` are skipped automatically.
 - **Tailored documents.** For each strong match Claude rewrites your resume and drafts a cover letter using **only facts from your resume**. Both are saved as Markdown and PDF, plus a `changes.md` explaining what was changed.
 - **Form filling.** Opens the application page in Chromium, uploads your PDFs, and has Claude answer every field, including custom questions. It flags anything it can't answer from your profile instead of guessing.
-- **You stay in control.** By default nothing is submitted without your OK. Auto-submit is opt-in and only fires when every field is filled and no CAPTCHA is present. jobbot never solves CAPTCHAs.
+- **You stay in control.** By default nothing is submitted without your OK. Auto-submit is opt-in and only fires when every field is filled and no CAPTCHA is present. hire-me-please never solves CAPTCHAs.
 - **Application tracker.** A local SQLite database records every job, its score, documents, status (`new`, `scored`, `skipped`, `tailored`, `applied`, `interviewing`, `rejected`, `offer`, `withdrawn`, `error`) and a full history. You can export it to CSV.
 - **Daily limit.** Caps how many applications go out per day.
 
@@ -28,15 +30,15 @@ It works with a Claude subscription through the Claude Code CLI (no API key need
 ## Setup
 
 ```bash
-git clone https://github.com/Okyaaa/jobbot.git
-cd jobbot
+git clone https://github.com/Okyaaa/hire-me-please.git
+cd hire-me-please
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e .
 playwright install chromium
-jobbot init
+hire-me-please init
 ```
 
-`jobbot init` creates your private working files: `profile.yaml`, `resume.md`, `.env` and the `jobs.db` database. All of them are in `.gitignore`, so your personal data never gets committed.
+`hire-me-please init` creates your private working files: `profile.yaml`, `resume.md`, `.env` and the `jobs.db` database. All of them are in `.gitignore`, so your personal data never gets committed.
 
 Then:
 
@@ -44,7 +46,7 @@ Then:
    - **Claude plan (no API key):** sign in once with `claude auth login`. This uses your plan's usage limits.
    - **API key:** put `ANTHROPIC_API_KEY=...` in `.env`. This is billed per token.
 
-   With `backend: auto` in `profile.yaml`, jobbot uses the key if there is one, otherwise the CLI.
+   With `backend: auto` in `profile.yaml`, hire-me-please uses the key if there is one, otherwise the CLI.
 2. **Add your resume.** Replace `resume.md` with your real resume in Markdown.
 3. **Fill in `profile.yaml`.** See [`profile.example.yaml`](profile.example.yaml) for every option. It covers:
    - your contact details, work authorization, salary expectation and notice period
@@ -58,27 +60,27 @@ The more you fill in, the fewer questions get flagged for you to answer by hand.
 ### All in one
 
 ```bash
-jobbot run --top 5            # fetch, score, tailor the 5 best, then apply
+hire-me-please run --top 5            # fetch, score, tailor the 5 best, then apply
 ```
 
 ### Step by step
 
 ```bash
-jobbot fetch                          # pull new roles from your watched companies
-jobbot import imports/linkedin.json   # add jobs collected from other sites
-jobbot score                          # Claude scores every new job
-jobbot list --status scored           # see what scored well
-jobbot tailor --top 5                 # tailored resume + cover letter for the top 5
-jobbot tailor --job <id>              # ...or for one specific job
-jobbot apply --next 5                 # open and fill the next 5 application forms
-jobbot mark <id> interviewing --note "recruiter call Friday"
-jobbot show <id>                      # details and history for one job
-jobbot export                         # write the tracker to applications.csv
+hire-me-please fetch                          # pull new roles from your watched companies
+hire-me-please import imports/linkedin.json   # add jobs collected from other sites
+hire-me-please score                          # Claude scores every new job
+hire-me-please list --status scored           # see what scored well
+hire-me-please tailor --top 5                 # tailored resume + cover letter for the top 5
+hire-me-please tailor --job <id>              # ...or for one specific job
+hire-me-please apply --next 5                 # open and fill the next 5 application forms
+hire-me-please mark <id> interviewing --note "recruiter call Friday"
+hire-me-please show <id>                      # details and history for one job
+hire-me-please export                         # write the tracker to applications.csv
 ```
 
 ### Importing jobs from other sites
 
-`jobbot import` takes a JSON list like this:
+`hire-me-please import` takes a JSON list like this:
 
 ```json
 [
@@ -98,7 +100,7 @@ Jobs already in the database are ignored, so importing the same file twice is sa
 
 ### Submitting
 
-For each form, jobbot fills it in, prints a table of what it entered, flags anything it couldn't answer, and waits:
+For each form, hire-me-please fills it in, prints a table of what it entered, flags anything it couldn't answer, and waits:
 
 `[s]ubmit for me · [d]one, I submitted it · [k] skip job · [l]ater · [q]uit`
 
@@ -108,7 +110,7 @@ To let it click Submit itself, set `apply.auto_submit: true` in `profile.yaml` o
 
 Many job sites (LinkedIn, JobStreet, Indeed) have no public API. [`examples/daily-routine.md`](examples/daily-routine.md) is a prompt for a scheduled Claude Code task, which runs it on a timer while the Claude app is open. The routine:
 
-1. runs `jobbot fetch` and checks remote job boards,
+1. runs `hire-me-please fetch` and checks remote job boards,
 2. searches LinkedIn and other sites with Claude in Chrome and imports what it finds,
 3. scores and tailors the strong matches,
 4. sends you a summary with every planned form answer, and **waits for your OK**,
@@ -119,7 +121,7 @@ Copy the file, replace the `<ANGLE BRACKET>` values with your own rules and answ
 ## Project layout
 
 ```
-jobbot/
+hire_me_please/
   cli.py        command-line entry point
   sources.py    Greenhouse / Lever / Ashby fetchers
   llm.py        Claude calls: scoring, tailoring, form answers (API or Claude Code CLI)

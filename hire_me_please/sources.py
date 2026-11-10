@@ -93,7 +93,7 @@ FETCHERS = {"greenhouse": greenhouse, "lever": lever, "ashby": ashby}
 
 def fetch_all(sources: dict) -> list[dict]:
     jobs: list[dict] = []
-    with httpx.Client(timeout=TIMEOUT, headers={"User-Agent": "jobbot/0.1"}, follow_redirects=True) as client:
+    with httpx.Client(timeout=TIMEOUT, headers={"User-Agent": "hire-me-please/0.1"}, follow_redirects=True) as client:
         for source, slugs in (sources or {}).items():
             fetch = FETCHERS.get(source)
             if not fetch:

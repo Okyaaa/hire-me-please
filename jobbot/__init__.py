@@ -1,1 +1,0 @@
-"""jobbot: job application automation."""

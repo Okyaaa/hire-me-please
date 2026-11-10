@@ -20,7 +20,7 @@ from .config import BROWSER_DIR, Config
 
 console = Console()
 
-# Tags every visible field with data-jobbot="fN" and returns a description of each.
+# Tags every visible field with data-hire-me-please="fN" and returns a description of each.
 # Radio buttons and checkboxes sharing a name are collapsed into one field with options.
 EXTRACT_JS = r"""
 () => {
@@ -80,7 +80,7 @@ EXTRACT_JS = r"""
           el.getAttribute('role') !== 'combobox') continue;
     }
     const id = 'f' + (n++);
-    el.setAttribute('data-jobbot', id);
+    el.setAttribute('data-hire-me-please', id);
     if (choice) {
       const key = type + ':' + (el.name || id);
       const opt = clean((byFor(el) && own(byFor(el))) || (el.closest('label') && own(el.closest('label'))) ||
@@ -178,7 +178,7 @@ def read_combobox_options(page: Page, fields: list[dict]) -> None:
         if f["type"] != "combobox":
             continue
         try:
-            box = page.locator(f"[data-jobbot='{f['id']}']")
+            box = page.locator(f"[data-hire-me-please='{f['id']}']")
             box.click(timeout=2000)
             page.wait_for_timeout(400)
             opts = listbox_options(page, box).all_inner_texts()[:80]
@@ -199,7 +199,7 @@ def upload_files(page: Page, fields: list[dict], resume: Path | None, cover: Pat
                 result.needs_human.append(f"{f['label']}: no file to upload")
             continue
         try:
-            page.set_input_files(f"[data-jobbot='{f['id']}']", str(path))
+            page.set_input_files(f"[data-hire-me-please='{f['id']}']", str(path))
             result.filled += 1
             page.wait_for_timeout(1200)  # some ATSs parse the resume and prefill fields
         except Exception as e:  # noqa: BLE001 - surface any Playwright failure to the user
@@ -218,7 +218,7 @@ def best_option(options: list[str], value: str) -> int | None:
 
 
 def fill_field(page: Page, f: dict, value: str) -> None:
-    sel = f"[data-jobbot='{f['id']}']"
+    sel = f"[data-hire-me-please='{f['id']}']"
     kind = f["type"]
     if kind in ("radio", "checkbox"):
         wanted = [v for v in (x.strip() for x in value.split("|")) if v]
@@ -226,7 +226,7 @@ def fill_field(page: Page, f: dict, value: str) -> None:
             i = best_option(f["options"], w)
             if i is None:
                 raise ValueError(f"option {w!r} not found")
-            box = page.locator(f"[data-jobbot='{f['option_ids'][i]}']")
+            box = page.locator(f"[data-hire-me-please='{f['option_ids'][i]}']")
             try:
                 box.check(timeout=3000)
             except Exception:  # noqa: BLE001 - custom-styled inputs: click the input or its label

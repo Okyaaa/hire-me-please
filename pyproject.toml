@@ -1,5 +1,5 @@
 [project]
-name = "jobbot"
+name = "hire-me-please"
 version = "0.1.0"
 description = "Find, score, tailor, fill and submit job applications with Claude + Playwright"
 requires-python = ">=3.11"
@@ -15,11 +15,11 @@ dependencies = [
 ]
 
 [project.scripts]
-jobbot = "jobbot.cli:main"
+hire-me-please = "hire_me_please.cli:main"
 
 [build-system]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["jobbot"]
+packages = ["hire_me_please"]

@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 from dotenv import load_dotenv
 
-ROOT = Path(os.environ.get("JOBBOT_HOME", Path.cwd())).resolve()
+ROOT = Path(os.environ.get("HIRE_ME_PLEASE_HOME", Path.cwd())).resolve()
 PROFILE_PATH = ROOT / "profile.yaml"
 EXAMPLE_PROFILE_PATH = Path(__file__).resolve().parent.parent / "profile.example.yaml"
 DB_PATH = ROOT / "jobs.db"
@@ -45,7 +45,7 @@ class Config:
 def load() -> Config:
     load_dotenv(ROOT / ".env")
     if not PROFILE_PATH.exists():
-        raise SystemExit("profile.yaml not found. Run `jobbot init` first.")
+        raise SystemExit("profile.yaml not found. Run `hire-me-please init` first.")
     profile = yaml.safe_load(PROFILE_PATH.read_text()) or {}
     resume_path = ROOT / profile.get("resume_path", "resume.md")
     if not resume_path.exists():

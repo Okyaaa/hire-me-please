@@ -107,7 +107,7 @@ def cmd_apply(args) -> None:
     jobs = [db.get(conn, args.job)] if args.job else db.by_status(conn, "tailored", limit=args.next)
     jobs = [j for j in jobs if j]
     if not jobs:
-        console.print("Nothing to apply to. Run `jobbot tailor` first.")
+        console.print("Nothing to apply to. Run `hire-me-please tailor` first.")
         return
     auto = args.submit or bool(cfg.apply.get("auto_submit", False))
     apply_jobs(cfg, conn, jobs, auto_submit=auto)
@@ -210,7 +210,7 @@ def cmd_export(args) -> None:
 
 
 def main() -> None:
-    p = argparse.ArgumentParser(prog="jobbot", description="Find, score, tailor, fill and submit job applications.")
+    p = argparse.ArgumentParser(prog="hire-me-please", description="Find, score, tailor, fill and submit job applications.")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     sub.add_parser("init", help="create profile.yaml, resume.md, .env and the database").set_defaults(fn=cmd_init)

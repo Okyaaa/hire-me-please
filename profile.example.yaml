@@ -1,4 +1,4 @@
-# Copy to profile.yaml (`jobbot init` does this) and fill in.
+# Copy to profile.yaml (`hire-me-please init` does this) and fill in.
 # Everything here is sent to Claude to score jobs, tailor documents and answer form questions.
 # Claude is told to use ONLY these facts plus your resume, so the more you fill in, the fewer
 # questions get flagged for you to answer by hand.
@@ -58,8 +58,8 @@ sources:
   ashby: [ramp]
 
 apply:
-  # false: jobbot fills the form and waits for you to review and click Submit yourself.
-  # true:  jobbot clicks Submit itself, but only when no field needs you and no CAPTCHA is present.
+  # false: hire-me-please fills the form and waits for you to review and click Submit yourself.
+  # true:  hire-me-please clicks Submit itself, but only when no field needs you and no CAPTCHA is present.
   auto_submit: false
   daily_limit: 15
   headless: false
@@ -68,7 +68,7 @@ apply:
 
 model: claude-opus-5-5
 
-# How jobbot reaches Claude:
+# How hire-me-please reaches Claude:
 #   claude-cli: the Claude Code CLI signed in with your Claude plan (`claude auth login`). No API key.
 #   api:        the Anthropic API with ANTHROPIC_API_KEY in .env, billed per token.
 #   auto:       api if a key is set, otherwise claude-cli.
