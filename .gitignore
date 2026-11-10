@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.egg-info/
+.env
+profile.yaml
+resume.md
+jobs.db
+output/
+.browser-profile/
+imports/
+applications.csv
+.DS_Store
+.claude/

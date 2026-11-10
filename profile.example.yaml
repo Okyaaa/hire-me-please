@@ -1,0 +1,75 @@
+# Copy to profile.yaml (`jobbot init` does this) and fill in.
+# Everything here is sent to Claude to score jobs, tailor documents and answer form questions.
+# Claude is told to use ONLY these facts plus your resume, so the more you fill in, the fewer
+# questions get flagged for you to answer by hand.
+
+personal:
+  first_name: Ada
+  last_name: Lovelace
+  preferred_name: ""
+  email: ada@example.com
+  phone: "+1 555 555 0100"
+  location: "New York, NY, USA"
+  linkedin: https://www.linkedin.com/in/your-handle
+  github: https://github.com/your-handle
+  website: ""
+  pronouns: ""
+
+work:
+  authorized_to_work: "Yes, authorized to work in the US"
+  requires_sponsorship: false
+  willing_to_relocate: false
+  remote_preference: "Remote or hybrid in NYC"
+  notice_period: "2 weeks"
+  salary_expectation: "$160,000 - $190,000 base"
+  years_of_experience: 6
+  earliest_start_date: "2 weeks after offer"
+
+# Voluntary self-identification answers. "Decline to self-identify" is always safe.
+eeo:
+  gender: Decline to self-identify
+  race: Decline to self-identify
+  veteran_status: Decline to self-identify
+  disability_status: Decline to self-identify
+
+# Extra facts / canned answers Claude may use for custom questions.
+extra_answers:
+  how_did_you_hear: "Company careers page"
+  # why_this_role: "..."  (leave out to let Claude draft one per job)
+
+# Your base resume in Markdown. Tailored versions are generated from it per job.
+resume_path: resume.md
+
+search:
+  # A job must match at least one keyword in its title to be scored.
+  title_keywords: ["software engineer", "backend", "platform engineer"]
+  exclude_title_keywords: ["intern", "principal", "manager", "staff"]
+  # Any substring match on location; leave empty to accept all.
+  locations: ["remote", "new york", "nyc"]
+  min_score: 70            # only tailor/apply to jobs Claude scores at or above this
+
+# Companies to watch, by their ATS board slug:
+#   Greenhouse: job-boards.greenhouse.io/<slug>
+#   Lever:      jobs.lever.co/<slug>
+#   Ashby:      jobs.ashbyhq.com/<slug>
+sources:
+  greenhouse: [stripe, airbnb]
+  lever: [spotify]
+  ashby: [ramp]
+
+apply:
+  # false: jobbot fills the form and waits for you to review and click Submit yourself.
+  # true:  jobbot clicks Submit itself, but only when no field needs you and no CAPTCHA is present.
+  auto_submit: false
+  daily_limit: 15
+  headless: false
+  # Allow Claude to tick "I agree to the privacy policy / data processing" checkboxes.
+  accept_privacy_consents: true
+
+model: claude-opus-5-5
+
+# How jobbot reaches Claude:
+#   claude-cli: the Claude Code CLI signed in with your Claude plan (`claude auth login`). No API key.
+#   api:        the Anthropic API with ANTHROPIC_API_KEY in .env, billed per token.
+#   auto:       api if a key is set, otherwise claude-cli.
+backend: auto
